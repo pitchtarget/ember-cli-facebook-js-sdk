@@ -17,15 +17,15 @@ var fb = {
 
     this.fbInitPromise = new Ember.RSVP.Promise(function(resolve){
       window.fbAsyncInit = function() {
-        FB.init(initSettings);
+        window.FB.init(initSettings);
         Ember.run(null, resolve);
       };
       Ember.$.getScript('//connect.facebook.net/en_US/sdk.js');
     }).then(function() {
-      window.fbAsyncInit = original;
-      if (window.fbAsyncInit) {
-        window.fbAsyncInit.hasRun = true;
+      if (original) {
+        window.fbAsyncInit = original;
         window.fbAsyncInit();
+        window.fbAsyncInit.hasRun = true;
       }
     });
 

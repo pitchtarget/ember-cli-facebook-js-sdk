@@ -36,7 +36,11 @@ import FB from 'ember-cli-facebook-js-sdk/fb';
 export default {
   name: 'fb',
   initialize: function() {
-    return FB.init();
+    return FB.init({
+      appId: 'YOUR APP ID',
+      version: 'v2.3',
+      xfbml: true
+    });
   }
 };
 ```

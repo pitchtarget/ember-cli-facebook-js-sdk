@@ -1,0 +1,36 @@
+<html>
+  <body>
+   <script>
+      window.fbAsyncInit = function() {
+        FB.Event.subscribe('xfbml.render', function() { console.log('foooo');});
+        FB.Event.subscribe('auth.authResponseChanged', function() { console.log('ou'); });
+        FB.Event.subscribe('auth.statusChanged', function() { console.log('hdsdhjj'); });
+        FB.Event.subscribe('auth.login', function() { console.log('login hdsdhjj'); });
+        FB.init({
+          appId      : '1565218020393850',
+          xfbml      : true,
+          version    : 'v2.3',
+          status     : true
+        });
+        FB.getLoginStatus(function(response) {
+          console.log('getLoginStatus', response);
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "http://connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <div id="fb-root"></div>
+
+
+    <p>
+      <fb:login-button scope="public_profile,email">
+      </fb:login-button>
+    </p>
+  </body>
+</html>

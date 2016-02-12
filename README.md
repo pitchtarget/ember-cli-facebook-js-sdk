@@ -24,6 +24,11 @@ The methods implemented are:
 
 * ember install ember-cli-facebook-js-sdk
 
+### Upgrade from 0.0.4
+
+From version 1.0.0 ember-cli-facebook-js-sdk implements a service, before it was a simple ES6 module you should import.
+If you prefer to stick to the old version, checkout the 0.0.4 tag.
+
 ## Usage and configuration
 
 Before using the [Facebook SDK for Javascript](https://developers.facebook.com/docs/javascript) you need

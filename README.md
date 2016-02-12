@@ -70,6 +70,7 @@ You can find an example app which make use of the addon in the [I have been to r
 ## Running Tests
 
 TODO: I need to find a way to run test with a valid (never expiring) access token for a test user.
+Before running tests, substitute any occurence of YOUR-APP-ID and YOUR-FB-TOKEN in `tests/unit/services/fb-test.js` with respectively your Facebook App ID and access token.
 
 * `ember test`
 * `ember test --server`

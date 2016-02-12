@@ -68,7 +68,7 @@ export default {
 };
 ```
 
-## Exmaple app
+## Example app
 
 You can find an example app which make use of the addon in the [I have been to repo](https://github.com/bugant/i-have-been-to).
 

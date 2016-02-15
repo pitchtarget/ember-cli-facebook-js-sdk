@@ -22,12 +22,12 @@ The methods implemented are:
 
 ## Installation
 
-* ember install ember-cli-facebook-js-sdk
+* `ember install ember-cli-facebook-js-sdk`
 
 ### Upgrade from 0.0.4
 
 From version 1.0.0 ember-cli-facebook-js-sdk implements a service, before it was a simple ES6 module you should import.
-If you prefer to stick to the old version, checkout the 0.0.4 tag.
+If you prefer to stick to the old version, checkout the [0.0.4 tag](https://github.com/pitchtarget/ember-cli-facebook-js-sdk/tree/0.0.4).
 
 ## Usage and configuration
 
@@ -66,6 +66,20 @@ export default {
   name: 'fb',
   initialize
 };
+```
+
+You can now use the add-on to, for example, retrieve the current Facebook user date from your route:
+
+```js
+import Ember from 'ember';
+
+export default Ember.Route.extend({
+  fb: Ember.inject.service(),
+
+  model() {
+    return this.get('fb').api('/me');
+  }
+});
 ```
 
 ## Example app

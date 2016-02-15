@@ -68,7 +68,7 @@ export default {
 };
 ```
 
-You can now use the add-on to, for example, retrieve the current Facebook user date from your route:
+You can now use the add-on to, for example, retrieve the current Facebook user data from your route:
 
 ```js
 import Ember from 'ember';

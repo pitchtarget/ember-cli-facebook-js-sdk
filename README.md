@@ -33,6 +33,8 @@ If you prefer to stick to the old version, checkout the [0.0.4 tag](https://gith
 
 ## Usage and configuration
 
+### Configuration
+
 Before using the [Facebook SDK for Javascript](https://developers.facebook.com/docs/javascript) you need
 to include it in your HTML. The more convenient way to do it is by using the addon service's FBInit method.
 To do so, you must configure the parameters to use to initialize the Facebook SDK in your `config/environment.js` file in the `FB` key.
@@ -46,6 +48,8 @@ The following is a basic example of such a configuration:
   }
 ```
 
+### Skipping Facebook SDK init
+
 Note, if you use other addons or if you prefer to initialize the Facebook SDK for Javascript by your own, you must configure the addon to skip the initialization process:
 
 ```js
@@ -53,6 +57,8 @@ Note, if you use other addons or if you prefer to initialize the Facebook SDK fo
     skipInit: true
   }
 ```
+
+### Usage
 
 Whenever you need to interact with Facebook SDK, you must inject the service in your code and use it as you would do with the
 original SDK. Remember that async functions that would normally require a callback, here return a Promise.
@@ -69,6 +75,26 @@ export default {
   initialize
 };
 ```
+
+### Initialize the Facebook JS SDK
+
+Before using the Facebook SDK you must be sure to have initialized it.
+The most convenient way is to call the `FBInit` function of the `fb`
+service in your `Application` route:
+
+```js
+import Ember from 'ember';
+
+export default Ember.Route.extend({
+  fb: Ember.inject.service(),
+
+  beforeModel() {
+    return this.get('fb').FBInit();
+  }
+})
+```
+
+### Usage example
 
 You can now use the add-on to, for example, retrieve the current Facebook user data from your route:
 

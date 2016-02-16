@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-facebook-js-sdk",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple wrapper for the Facebook JS SDK",
   "directories": {
     "doc": "doc",

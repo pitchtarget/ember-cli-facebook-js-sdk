@@ -26,7 +26,7 @@ export default Ember.Service.extend({
         Ember.run(null, resolve);
       };
       Ember.$.getScript('//connect.facebook.net/en_US/sdk.js', function() {
-        Ember.run(null, resolve);
+        // Do nothing here, wait for window.fbAsyncInit to be called.
       });
     }).then(function() {
       if (original) {

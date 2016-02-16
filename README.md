@@ -1,3 +1,5 @@
+[![Ember Observer Score](http://emberobserver.com/badges/ember-cli-facebook-js-sdk.svg)](http://emberobserver.com/addons/ember-cli-facebook-js-sdk)
+
 # Ember-cli-facebook-js-sdk
 
 Simple Facebook SDK for Javascript addon for your Ember CLI app.

@@ -5,6 +5,7 @@ import Ember from 'ember';
 moduleFor('service:fb', 'Unit | Service | fb', {
   beforeEach() {
     let owner = getOwner(this.subject());
+    window.FB = undefined;
     owner.register('config:environment', Ember.Object.create({
       FB: {
         appId: 'YOUR-APP-ID',

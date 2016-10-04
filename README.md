@@ -43,10 +43,13 @@ The following is a basic example of such a configuration:
 ```js
   FB = {
     appId: 'YOUR APP ID',
-    version: 'v2.3',
+    version: 'v2.7',
     xfbml: true
   }
 ```
+
+You need to replace **YOUR APP ID** with your own Facebook App ID (which can be found in the Facebook developer dashboard)
+and also set the **version** to Facebook API version you would like to use.
 
 ### Skipping Facebook SDK init
 

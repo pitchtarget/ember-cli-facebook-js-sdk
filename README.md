@@ -21,6 +21,8 @@ The methods implemented are:
   - login
   - logout
   - getAuthResponse
+* Misc
+  - XFBML.parse
 
 ## Installation
 
@@ -112,6 +114,27 @@ export default Ember.Route.extend({
   }
 });
 ```
+
+### Forcing XFBML tag re-parsing
+
+The loading and initialization of the Facebook SDK is asynchronous so it may happen that you use XFBML tags and these
+are not properly parsed from the SDK: this could happen, for example, because you add such a tag as part of a component
+mark-up which is added to the DOM after the parsing init script already run. In such a case you may find it useful to rescue
+to call the [xfbml_parse](https://developers.facebook.com/docs/reference/javascript/FB.XFBML.parse) function explicitly:
+
+```js
+import Ember from 'ember';
+
+export default Ember.Component.extend({
+  fb: Ember.inject.service(),
+
+  didInsertElement() {
+    return this.get('fb').xfbml_parse();
+  }
+});
+```
+
+You may also try to schedule the same code to run `afterRender` from your route's `controller` hook.
 
 ## Example app
 

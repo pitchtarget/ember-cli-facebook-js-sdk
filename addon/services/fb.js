@@ -141,5 +141,15 @@ export default Ember.Service.extend({
 
   getAuthResponse: function() {
     return window.FB.getAuthResponse();
+  },
+
+  xfbml_parse: function() {
+    return this.FBInit().then(function() {
+      return new Ember.RSVP.Promise(function(resolve) {
+        return window.FB.XFBML.parse(undefined, function() {
+          Ember.run(null, resolve, 'XFBML.parse');
+        });
+      });
+    });
   }
 });

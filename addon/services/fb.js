@@ -49,26 +49,8 @@ export default Ember.Service.extend({
     this.setAccessToken(token);
   },
 
-  api(path) {
-    var method = 'GET';
-    var parameters = {};
-    var arg;
-
+  api(path, method = 'GET', parameters = {}) {
     if (!path) { return Ember.RSVP.reject('Please, provide a path for your request'); }
-
-    switch (arguments.length) {
-      case 2:
-        arg = arguments[1];
-        if (typeof arg === 'string') {
-          method = arg;
-        } else {
-          parameters = arg;
-        }
-        break;
-      case 3:
-        method = arguments[1];
-        parameters = arguments[2];
-    }
 
     parameters = Ember.$.extend(parameters, {access_token: this.accessToken});
 

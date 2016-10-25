@@ -43,5 +43,11 @@ module.exports = function(environment) {
 
   }
 
+  ENV.FB = {
+    appId: 'YOUR_APP_ID',
+    version: 'v2.8',
+    xfbml: true
+  }
+
   return ENV;
 };

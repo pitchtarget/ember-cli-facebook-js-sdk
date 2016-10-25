@@ -39,7 +39,7 @@ define('dummy/ember-cli-facebook-js-sdk/tests/modules/ember-cli-facebook-js-sdk/
   QUnit.module('JSHint - modules/ember-cli-facebook-js-sdk/services');
   QUnit.test('modules/ember-cli-facebook-js-sdk/services/fb.js should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'modules/ember-cli-facebook-js-sdk/services/fb.js should pass jshint.\nmodules/ember-cli-facebook-js-sdk/services/fb.js: line 18, col 5, Forgotten \'debugger\' statement?\n\n1 error');
+    assert.ok(true, 'modules/ember-cli-facebook-js-sdk/services/fb.js should pass jshint.');
   });
 });
 define('dummy/initializers/app-version', ['exports', 'ember-cli-app-version/initializer-factory', 'dummy/config/environment'], function (exports, _emberCliAppVersionInitializerFactory, _dummyConfigEnvironment) {
@@ -82,6 +82,32 @@ define('dummy/initializers/export-application-global', ['exports', 'ember', 'dum
     initialize: initialize
   };
 });
+define('dummy/mirage/config', ['exports'], function (exports) {
+  exports['default'] = function () {
+    this.urlPrefix = 'https://graph.facebook.com';
+
+    this.get('https://graph.facebook.com/v2.5/me', function (db, request) {
+      debugger;
+      var attrs = JSON.parse(request.requestBody);
+
+      if (attrs.access_token === 'bad token') {}
+
+      return {
+        name: 'Matt Eo',
+        id: '100000000000001'
+      };
+    });
+  };
+});
+define("dummy/mirage/scenarios/default", ["exports"], function (exports) {
+  exports["default"] = function () /* server */{
+
+    // Seed your development database using your factories. This
+    // data will not be loaded in your tests.
+
+    // server.createList('contact', 10);
+  };
+});
 define('dummy/router', ['exports', 'ember', 'dummy/config/environment'], function (exports, _ember, _dummyConfigEnvironment) {
 
   var Router = _ember['default'].Router.extend({
@@ -108,7 +134,7 @@ define("dummy/templates/application", ["exports"], function (exports) {
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.2.0",
+        "revision": "Ember@2.2.2",
         "loc": {
           "source": null,
           "start": {
@@ -178,7 +204,7 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("dummy/app")["default"].create({"name":"ember-cli-facebook-js-sdk","version":"1.0.0+712cb473"});
+  require("dummy/app")["default"].create({"name":"ember-cli-facebook-js-sdk","version":"v1.0.4"});
 }
 
 /* jshint ignore:end */

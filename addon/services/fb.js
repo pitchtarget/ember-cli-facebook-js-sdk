@@ -1,13 +1,12 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 
-export default Ember.Service.extend({
+export default Ember.Service.extend(Ember.Evented, {
   fbInitPromise: null,
 
   FBInit() {
     if (this.fbInitPromise) { return this.fbInitPromise; }
 
-    const ENV = getOwner(this)._lookupFactory('config:environment');
+    const ENV = Ember.getOwner(this)._lookupFactory('config:environment');
 
     if (ENV.FB && ENV.FB.skipInit) {
       this.fbInitPromise = Ember.RSVP.Promise.resolve('skip init');
@@ -41,6 +40,7 @@ export default Ember.Service.extend({
 
   setAccessToken(token) {
     this.accessToken = token;
+    this.trigger('fb.setAccessToken', token);
     return token;
   },
 
@@ -49,7 +49,7 @@ export default Ember.Service.extend({
     this.setAccessToken(token);
   },
 
-  api(path) {
+  _api(path) {
     var method = 'GET';
     var parameters = {};
     var arg;
@@ -83,6 +83,22 @@ export default Ember.Service.extend({
           Ember.run(null, resolve, response);
         });
       });
+    });
+  },
+
+  api() {
+    return this._api(...arguments).catch((error) => {
+      if (error.code === 190) {
+        console.debug('Trying to refresh Facebook session an re-do the Facebook API request');
+        return this.getLoginStatus().then((response) => {
+          if (response.status === 'connected') {
+            this.setAccessToken(response.authResponse.accessToken);
+            return this._api(...arguments);
+          }
+          return Ember.RSVP.reject(response);
+        });
+      }
+      return Ember.RSVP.reject(error);
     });
   },
 

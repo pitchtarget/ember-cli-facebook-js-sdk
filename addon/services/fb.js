@@ -2,11 +2,16 @@ import Ember from 'ember';
 
 export default Ember.Service.extend(Ember.Evented, {
   fbInitPromise: null,
+  locale: null,
 
   FBInit() {
     if (this.fbInitPromise) { return this.fbInitPromise; }
 
     const ENV = Ember.getOwner(this)._lookupFactory('config:environment');
+
+    // Detect language configuration and store it.
+    const locale = ENV.FB.locale || 'en_US';
+    this.locale = locale;
 
     if (ENV.FB && ENV.FB.skipInit) {
       this.fbInitPromise = Ember.RSVP.Promise.resolve('skip init');
@@ -24,7 +29,8 @@ export default Ember.Service.extend(Ember.Evented, {
         window.FB.init(initSettings);
         Ember.run(null, resolve);
       };
-      Ember.$.getScript('https://connect.facebook.net/en_US/sdk.js', function() {
+      // URL for the SDK is built according to locale. Defaults to `en_US`.
+      Ember.$.getScript(`https://connect.facebook.net/${locale}/sdk.js`, function() {
         // Do nothing here, wait for window.fbAsyncInit to be called.
       });
     }).then(function() {

@@ -6,7 +6,7 @@ export default Ember.Service.extend(Ember.Evented, {
   FBInit() {
     if (this.fbInitPromise) { return this.fbInitPromise; }
 
-    const ENV = Ember.getOwner(this)._lookupFactory('config:environment');
+    const ENV = Ember.getOwner(this).resolveRegistration('config:environment');
 
     if (ENV.FB && ENV.FB.skipInit) {
       this.fbInitPromise = Ember.RSVP.Promise.resolve('skip init');

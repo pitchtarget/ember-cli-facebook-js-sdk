@@ -33,6 +33,19 @@ test('FBInit define FB on window', function(assert) {
   });
 });
 
+test('FBInit loads localized version', function(assert) {
+  assert.expect(1);
+
+  return this.subject().FBInit({
+    appId: 'YOUR-APP-ID',
+    version: 'v2.5',
+    locale: 'es_ES'
+  }).then(function() {
+    assert.expect(this.subject().locale === 'es_ES');
+    assert.ok(window.FB);
+  });
+});
+
 test('fails with no app ID', function(assert) {
   assert.expect(1);
 

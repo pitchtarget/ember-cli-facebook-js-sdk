@@ -7,7 +7,7 @@ export default Ember.Service.extend(Ember.Evented, {
   FBInit() {
     if (this.fbInitPromise) { return this.fbInitPromise; }
 
-    const ENV = Ember.getOwner(this)._lookupFactory('config:environment');
+    const ENV = Ember.getOwner(this).resolveRegistration('config:environment');
 
     // Detect language configuration and store it.
     const locale = ENV.FB.locale || 'en_US';

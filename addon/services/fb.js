@@ -4,13 +4,15 @@ export default Ember.Service.extend(Ember.Evented, {
   fbInitPromise: null,
   locale: null,
 
-  FBInit() {
+  FBInit(options = {}) {
     if (this.fbInitPromise) { return this.fbInitPromise; }
 
     const ENV = Ember.getOwner(this).resolveRegistration('config:environment');
 
+    var initSettings = Ember.$.extend({}, ENV.FB || {}, options);
+
     // Detect language configuration and store it.
-    const locale = ENV.FB.locale || 'en_US';
+    const locale = initSettings.locale || 'en_US';
     this.locale = locale;
 
     if (ENV.FB && ENV.FB.skipInit) {
@@ -19,7 +21,6 @@ export default Ember.Service.extend(Ember.Evented, {
     }
 
     var original = window.fbAsyncInit;
-    var initSettings = ENV.FB;
     if (!initSettings || !initSettings.appId || !initSettings.version) {
       return Ember.RSVP.reject('No settings for init');
     }

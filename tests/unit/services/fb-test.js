@@ -34,14 +34,14 @@ test('FBInit define FB on window', function(assert) {
 });
 
 test('FBInit loads localized version', function(assert) {
-  assert.expect(1);
+  assert.expect(2);
 
   return this.subject().FBInit({
     appId: 'YOUR-APP-ID',
     version: 'v2.5',
     locale: 'es_ES'
-  }).then(function() {
-    assert.expect(this.subject().locale === 'es_ES');
+  }).then(() => {
+    assert.equal(this.subject().locale, 'es_ES', 'locale is localized');
     assert.ok(window.FB);
   });
 });

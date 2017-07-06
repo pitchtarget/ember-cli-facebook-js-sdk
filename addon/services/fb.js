@@ -147,7 +147,7 @@ export default Ember.Service.extend(Ember.Evented, {
           } else {
             Ember.run(null, reject, response);
           }
-        }, {scope: scope});
+        }, {scope: scope, return_scopes: true});
       });
     });
   },

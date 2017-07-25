@@ -99,6 +99,44 @@ export default Ember.Route.extend({
 })
 ```
 
+### Authorization
+
+When creating your own authorization flow, supply `fb.login()` with a space delimited string of the permissions that your app requires.
+
+```js
+import Ember from 'ember';
+
+export default Ember.Controller.extend({
+  fb: Ember.inject.service(),
+
+  actions: {
+    onClick() {
+      this.get('fb').login('email public_profile').then(function() {
+        ...
+      });
+    }
+  }
+});
+```
+
+If you need to supply additional options, pass them after the scope. For example, to request that your app can make public posts on behalf of the user, pass `default_audience: 'everyone'` as an option. Check the [docs](https://developers.facebook.com/docs/reference/javascript/FB.login/v2.10) for details.
+
+```js
+import Ember from 'ember';
+
+export default Ember.Controller.extend({
+  fb: Ember.inject.service(),
+
+  actions: {
+    onClick() {
+      this.get('fb').login('email public_profile', { default_audience: 'everyone' }).then(function() {
+        ...
+      });
+    }
+  }
+});
+```
+
 ### Usage example
 
 You can now use the add-on to, for example, retrieve the current Facebook user data from your route:

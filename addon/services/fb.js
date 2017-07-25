@@ -136,8 +136,15 @@ export default Ember.Service.extend(Ember.Evented, {
     });
   },
 
-  login: function(scope) {
+  login: function(scope, options={}) {
+
     var service = this;
+    var params = {scope: scope, return_scopes: true};
+
+    if (options) {
+      params = Ember.assign(params, options);
+    }
+
     return this.FBInit().then(function() {
       return new Ember.RSVP.Promise(function(resolve, reject) {
         window.FB.login(function(response) {
@@ -147,7 +154,7 @@ export default Ember.Service.extend(Ember.Evented, {
           } else {
             Ember.run(null, reject, response);
           }
-        }, {scope: scope, return_scopes: true});
+        }, params);
       });
     });
   },

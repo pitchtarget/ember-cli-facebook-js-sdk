@@ -1,13 +1,12 @@
-import { moduleFor, test }  from 'ember-qunit';
-import getOwner from 'ember-getowner-polyfill';
+import { moduleFor, test } from 'ember-qunit';
 import Ember from 'ember';
 
 const fbAppId = '1565218020393850';
-const fbAccessToken = 'EAAWPjrgaA3oBAF5cZBiWuJCttiXnxRe7uMKbmENZCfrZAZBnMFguVjXG46bYMhdJpxnI3IBsKYZAtnhWamXPVUz6BZATwawirAYFpJXaRFL3akUMx4nWZBOdIGGW19JTlVqb6JJCQBdHT04ZAfHsB8SJVsPeZCgJDi8XZBwirhfbWjrDmslrpAKVjKqnR0WwLKJNl0xmTuhcNBygZDZD';
+const fbAccessToken = 'EAAWPjrgaA3oBAGV6ffmFOoK5FgrUvJV2YCZCOIXzNkJuYzD3iB4gZCwF9xb5oNHNqnmhQZAuRGne5L5L0xZAoZCAiswRsuSzISjnOxTJVpnUq5KZAB6SZBqIjduQPLZA83EGoncCIuZB4ze19IratQWivnQ07zevO048uBQclE1sU9jBQPgJu4KM9Y8BBLGNtivZBL7Vd221y5RgZDZD'
 
 moduleFor('service:fb', 'Unit | Service | fb', {
   beforeEach() {
-    let owner = getOwner(this.subject());
+    let owner = Ember.getOwner(this.subject());
     window.FB = undefined;
     owner.register('config:environment', Ember.Object.create({
       FB: {
@@ -52,7 +51,7 @@ test('FBInit loads localized version', function(assert) {
 test('fails with no app ID', function(assert) {
   assert.expect(1);
 
-  let owner = getOwner(this.subject());
+  let owner = Ember.getOwner(this.subject());
   owner.register('config:environment', Ember.Object.create());
   return this.subject().FBInit().catch(function(reason) {
     assert.ok(reason);
@@ -62,7 +61,7 @@ test('fails with no app ID', function(assert) {
 test('init get skipped', function(assert) {
   assert.expect(2);
   let subject = this.subject();
-  let owner = getOwner(subject);
+  let owner = Ember.getOwner(subject);
   owner.register('config:environment', Ember.Object.create({
     FB: {
       skipInit: true
@@ -90,7 +89,7 @@ test('fail to fetch user data with a bad token', function(assert) {
 
   return this.subject().api('/me').then(function() {
     assert.ok(false, "promise should not be fulfilled");
-  })['catch'](function(reason) {
+  }).catch(function(reason) {
     assert.ok(reason);
   });
 });
@@ -98,7 +97,7 @@ test('fail to fetch user data with a bad token', function(assert) {
 test('getLoginStatus', function(assert) {
   assert.expect(1);
   let subject = this.subject();
-  let owner = getOwner(subject);
+  let owner = Ember.getOwner(subject);
   owner.register('config:environment', Ember.Object.create({
     FB: {
       skipInit: true
@@ -116,33 +115,36 @@ test('getLoginStatus', function(assert) {
 });
 
 test('login', function(assert) {
-  assert.expect(1);
+  assert.expect(2);
   let subject = this.subject();
-  let owner = getOwner(subject);
+  let owner = Ember.getOwner(subject);
   owner.register('config:environment', Ember.Object.create({
     FB: {
       skipInit: true
     }
   }));
 
+  const fakeResp = {
+    authResponse: {
+      accessToken: 'foo'
+    }
+  };
   window.FB = {
     login(f) {
       assert.ok('calls FB.login');
-      f.call(window, {
-        authResponse: {
-          accessToken: 'foo'
-        }
-      });
+      f.call(window, fakeResp);
     }
   };
 
-  return subject.login();
+  return subject.login().then(function(result) {
+    assert.equal(fakeResp, result, 'returns the Facebook response');
+  });
 });
 
 test('login when it fails', function(assert) {
   assert.expect(2);
   let subject = this.subject();
-  let owner = getOwner(subject);
+  let owner = Ember.getOwner(subject);
   owner.register('config:environment', Ember.Object.create({
     FB: {
       skipInit: true
@@ -164,7 +166,7 @@ test('login when it fails', function(assert) {
 test('logout', function(assert) {
   assert.expect(1);
   let subject = this.subject();
-  let owner = getOwner(subject);
+  let owner = Ember.getOwner(subject);
   owner.register('config:environment', Ember.Object.create({
     FB: {
       skipInit: true
@@ -184,7 +186,7 @@ test('logout', function(assert) {
 test('getAuthResponse', function(assert) {
   assert.expect(1);
   let subject = this.subject();
-  let owner = getOwner(subject);
+  let owner = Ember.getOwner(subject);
   owner.register('config:environment', Ember.Object.create({
     FB: {
       skipInit: true

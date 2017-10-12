@@ -1,6 +1,13 @@
-import Ember from 'ember';
+import $ from 'jquery';
 
-export default Ember.Service.extend(Ember.Evented, {
+import Evented from '@ember/object/evented';
+import Service from '@ember/service';
+import { getOwner } from '@ember/application';
+import { assign } from '@ember/polyfills'
+import { Promise, resolve, reject } from 'rsvp';
+import { run } from '@ember/runloop';
+
+export default Service.extend(Evented, {
   fbInitPromise: null,
   locale: null,
   refreshToken: true,
@@ -8,31 +15,31 @@ export default Ember.Service.extend(Ember.Evented, {
   FBInit(options = {}) {
     if (this.fbInitPromise) { return this.fbInitPromise; }
 
-    const ENV = Ember.getOwner(this).resolveRegistration('config:environment');
+    const ENV = getOwner(this).resolveRegistration('config:environment');
 
-    var initSettings = Ember.$.extend({}, ENV.FB || {}, options);
+    var initSettings = assign({}, ENV.FB || {}, options);
 
     // Detect language configuration and store it.
     const locale = initSettings.locale || 'en_US';
     this.locale = locale;
 
     if (ENV.FB && ENV.FB.skipInit) {
-      this.fbInitPromise = Ember.RSVP.Promise.resolve('skip init');
+      this.fbInitPromise = resolve('skip init');
       return this.fbInitPromise;
     }
 
     var original = window.fbAsyncInit;
     if (!initSettings || !initSettings.appId || !initSettings.version) {
-      return Ember.RSVP.reject('No settings for init');
+      return reject('No settings for init');
     }
 
-    this.fbInitPromise = new Ember.RSVP.Promise(function(resolve){
+    this.fbInitPromise = new Promise(function(resolve){
       window.fbAsyncInit = function() {
         window.FB.init(initSettings);
-        Ember.run(null, resolve);
+        run.next(null, resolve);
       };
       // URL for the SDK is built according to locale. Defaults to `en_US`.
-      Ember.$.getScript(`https://connect.facebook.net/${locale}/sdk.js`, function() {
+      $.getScript(`https://connect.facebook.net/${locale}/sdk.js`, function() {
         // Do nothing here, wait for window.fbAsyncInit to be called.
       });
     }).then(function() {
@@ -62,7 +69,7 @@ export default Ember.Service.extend(Ember.Evented, {
     var parameters = {};
     var arg;
 
-    if (!path) { return Ember.RSVP.reject('Please, provide a path for your request'); }
+    if (!path) { return reject('Please, provide a path for your request'); }
 
     switch (arguments.length) {
       case 2:
@@ -78,17 +85,17 @@ export default Ember.Service.extend(Ember.Evented, {
         parameters = arguments[2];
     }
 
-    parameters = Ember.$.extend(parameters, {access_token: this.accessToken});
+    parameters = assign(parameters, {access_token: this.accessToken});
 
     return this.FBInit().then(function() {
-      return new Ember.RSVP.Promise(function(resolve, reject) {
+      return new Promise(function(resolve, reject) {
         window.FB.api(path, method, parameters, function(response) {
           if (response.error) {
-            Ember.run(null, reject, response.error);
+            run.next(null, reject, response.error);
             return;
           }
 
-          Ember.run(null, resolve, response);
+          run.next(null, resolve, response);
         });
       });
     });
@@ -103,23 +110,23 @@ export default Ember.Service.extend(Ember.Evented, {
             this.setAccessToken(response.authResponse.accessToken);
             return this._api(...arguments);
           }
-          return Ember.RSVP.reject(response);
+          return reject(response);
         });
       }
-      return Ember.RSVP.reject(error);
+      return reject(error);
     });
   },
 
   ui: function(params) {
     return this.FBInit().then(function() {
-      return new Ember.RSVP.Promise(function(resolve, reject) {
+      return new Promise(function(resolve, reject) {
         window.FB.ui(params, function(response) {
           if (response && !response.error_code) {
-            Ember.run(null, resolve, response);
+            run.next(null, resolve, response);
             return;
           }
 
-          Ember.run(null, reject, response);
+          run.next(null, reject, response);
         });
       });
     });
@@ -129,9 +136,9 @@ export default Ember.Service.extend(Ember.Evented, {
 
   getLoginStatus: function(forceRequest) {
     return this.FBInit().then(function() {
-      return new Ember.RSVP.Promise(function(resolve) {
+      return new Promise(function(resolve) {
         window.FB.getLoginStatus(function(response) {
-          Ember.run(null, resolve, response);
+          run.next(null, resolve, response);
         }, forceRequest);
       });
     });
@@ -143,17 +150,17 @@ export default Ember.Service.extend(Ember.Evented, {
     var params = {scope: scope, return_scopes: true};
 
     if (options) {
-      params = Ember.$.extend({}, params, options);
+      params = assign({}, params, options);
     }
 
     return this.FBInit().then(function() {
-      return new Ember.RSVP.Promise(function(resolve, reject) {
+      return new Promise(function(resolve, reject) {
         window.FB.login(function(response) {
           if (response.authResponse) {
             service.accessToken = response.authResponse.accessToken;
-            Ember.run(null, resolve, response);
+            run.next(null, resolve, response);
           } else {
-            Ember.run(null, reject, response);
+            run.next(null, reject, response);
           }
         }, params);
       });
@@ -162,9 +169,9 @@ export default Ember.Service.extend(Ember.Evented, {
 
   logout: function() {
     return this.FBInit().then(function() {
-      return new Ember.RSVP.Promise(function(resolve) {
+      return new Promise(function(resolve) {
         window.FB.logout(function(response) {
-          Ember.run(null, resolve, response);
+          run.next(null, resolve, response);
         });
       });
     });
@@ -176,9 +183,9 @@ export default Ember.Service.extend(Ember.Evented, {
 
   xfbml_parse: function() {
     return this.FBInit().then(function() {
-      return new Ember.RSVP.Promise(function(resolve) {
+      return new Promise(function(resolve) {
         return window.FB.XFBML.parse(undefined, function() {
-          Ember.run(null, resolve, 'XFBML.parse');
+          run.next(null, resolve, 'XFBML.parse');
         });
       });
     });

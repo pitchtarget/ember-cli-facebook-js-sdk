@@ -82,6 +82,7 @@ test('get user data', function(assert) {
 
 test('fail to fetch user data with a bad token', function(assert) {
   this.subject().setAccessToken('foo');
+  this.subject().refreshToken = false;
   assert.expect(1);
 
   return this.subject().api('/me').then(function() {

@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Service.extend(Ember.Evented, {
   fbInitPromise: null,
   locale: null,
+  refreshToken: true,
 
   FBInit(options = {}) {
     if (this.fbInitPromise) { return this.fbInitPromise; }
@@ -95,7 +96,7 @@ export default Ember.Service.extend(Ember.Evented, {
 
   api() {
     return this._api(...arguments).catch((error) => {
-      if (error.code === 190) {
+      if (this.refreshToken && error.code === 190) {
         console.debug('Trying to refresh Facebook session an re-do the Facebook API request');
         return this.getLoginStatus().then((response) => {
           if (response.status === 'connected') {
@@ -142,7 +143,7 @@ export default Ember.Service.extend(Ember.Evented, {
     var params = {scope: scope, return_scopes: true};
 
     if (options) {
-      params = Ember.assign(params, options);
+      params = Ember.$.extend({}, params, options);
     }
 
     return this.FBInit().then(function() {

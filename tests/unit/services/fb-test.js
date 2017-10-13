@@ -2,18 +2,21 @@ import { moduleFor, test } from 'ember-qunit';
 import getOwner from 'ember-getowner-polyfill';
 import Ember from 'ember';
 
+const fbAppId = '1565218020393850';
+const fbAccessToken = 'EAAWPjrgaA3oBAKQhfR71a1LhKZCG7Hn9RKICGqxHcJXgiyeGZCOI6i6ZAq34v0VTZAnkEMYkZAbU3GJN2x1mdEuFp8EThA7eOxYAEsu87rZCFbeLlHfMoRr2CtZAZCvxz5iGoukZBL7ZCWjNsBZA6CLf52tTZCAF9V2jZAeya4rQxJetQBEwWh4hARlwzZCoHOR9smuix3CG85P4qJJgZDZD';
+
 moduleFor('service:fb', 'Unit | Service | fb', {
   beforeEach() {
     let owner = getOwner(this.subject());
     window.FB = undefined;
     owner.register('config:environment', Ember.Object.create({
       FB: {
-        appId: 'YOUR-APP-ID',
-        version: 'v2.5'
+        appId: fbAppId,
+        version: 'v2.10'
       }
     }));
 
-    this.subject().setAccessToken('YOUR-FB-TOKEN');
+    this.subject().setAccessToken(fbAccessToken);
   }
 });
 
@@ -26,8 +29,8 @@ test('FBInit define FB on window', function(assert) {
   assert.expect(1);
 
   return this.subject().FBInit({
-    appId: 'YOUR-APP-ID',
-    version: 'v2.5'
+    appId: fbAppId,
+    version: 'v2.10'
   }).then(function() {
     assert.ok(window.FB);
   });
@@ -37,8 +40,8 @@ test('FBInit loads localized version', function(assert) {
   assert.expect(2);
 
   return this.subject().FBInit({
-    appId: 'YOUR-APP-ID',
-    version: 'v2.5',
+    appId: fbAppId,
+    version: 'v2.10',
     locale: 'es_ES'
   }).then(() => {
     assert.equal(this.subject().locale, 'es_ES', 'locale is localized');

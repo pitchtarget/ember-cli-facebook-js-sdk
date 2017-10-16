@@ -1,9 +1,9 @@
-import { moduleFor, test } from 'ember-qunit';
+import { moduleFor, test }  from 'ember-qunit';
 import getOwner from 'ember-getowner-polyfill';
 import Ember from 'ember';
 
 const fbAppId = '1565218020393850';
-const fbAccessToken = 'EAAWPjrgaA3oBAKQhfR71a1LhKZCG7Hn9RKICGqxHcJXgiyeGZCOI6i6ZAq34v0VTZAnkEMYkZAbU3GJN2x1mdEuFp8EThA7eOxYAEsu87rZCFbeLlHfMoRr2CtZAZCvxz5iGoukZBL7ZCWjNsBZA6CLf52tTZCAF9V2jZAeya4rQxJetQBEwWh4hARlwzZCoHOR9smuix3CG85P4qJJgZDZD';
+const fbAccessToken = 'EAAWPjrgaA3oBAF5cZBiWuJCttiXnxRe7uMKbmENZCfrZAZBnMFguVjXG46bYMhdJpxnI3IBsKYZAtnhWamXPVUz6BZATwawirAYFpJXaRFL3akUMx4nWZBOdIGGW19JTlVqb6JJCQBdHT04ZAfHsB8SJVsPeZCgJDi8XZBwirhfbWjrDmslrpAKVjKqnR0WwLKJNl0xmTuhcNBygZDZD';
 
 moduleFor('service:fb', 'Unit | Service | fb', {
   beforeEach() {

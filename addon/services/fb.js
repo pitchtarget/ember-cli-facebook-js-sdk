@@ -8,7 +8,7 @@ export default Ember.Service.extend(Ember.Evented, {
   FBInit(options = {}) {
     if (this.fbInitPromise) { return this.fbInitPromise; }
 
-    const ENV = Ember.getOwner(this).factoryFor('config:environment');
+    const ENV = Ember.getOwner(this).resolveRegistration('config:environment');
 
     var initSettings = Ember.$.extend({}, ENV.FB || {}, options);
 

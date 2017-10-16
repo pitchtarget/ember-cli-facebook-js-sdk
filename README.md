@@ -28,6 +28,8 @@ The methods implemented are:
 
 * `ember install ember-cli-facebook-js-sdk`
 
+If you are running Ember.js < 2.13, use `1.1.0` version of the add-on.
+
 ### Upgrade from 0.0.4
 
 From version 1.0.0 ember-cli-facebook-js-sdk implements a service, before it was a simple ES6 module you should import.

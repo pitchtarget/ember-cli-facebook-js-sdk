@@ -2,7 +2,7 @@ import { moduleFor, test } from 'ember-qunit';
 import Ember from 'ember';
 
 const fbAppId = '1565218020393850';
-const fbAccessToken = 'EAAWPjrgaA3oBAGV6ffmFOoK5FgrUvJV2YCZCOIXzNkJuYzD3iB4gZCwF9xb5oNHNqnmhQZAuRGne5L5L0xZAoZCAiswRsuSzISjnOxTJVpnUq5KZAB6SZBqIjduQPLZA83EGoncCIuZB4ze19IratQWivnQ07zevO048uBQclE1sU9jBQPgJu4KM9Y8BBLGNtivZBL7Vd221y5RgZDZD'
+const fbAccessToken = 'EAAWPjrgaA3oBACymCMWIFlbLxy4Xbw1ZAQg3ApKwudSE1EXu95fxla0FOEQRxDm8IYZBiFNZBq9C1aytoTnpUXCsUnaYL594xl8yFhap1pmlfNbkHPerPFI8c8YLMquc92e5br7qIdCgmgumBzTu0PDnbWij6Bzs7vtaMWGNbeAGhXb893zc1k2Q2g32IaPVBRn4xn8igZDZD';
 
 moduleFor('service:fb', 'Unit | Service | fb', {
   beforeEach() {

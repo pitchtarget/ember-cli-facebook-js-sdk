@@ -45,7 +45,7 @@ The following is a basic example of such a configuration:
 ```js
   FB = {
     appId: 'YOUR APP ID',
-    version: 'v2.7',
+    version: 'v2.10',
     xfbml: true
   }
 ```
@@ -181,7 +181,7 @@ You can find an example app which make use of the addon in the [I have been to r
 ## Running Tests
 
 TODO: I need to find a way to run test with a valid (never expiring) access token for a test user.
-Before running tests, substitute any occurence of YOUR-APP-ID and YOUR-FB-TOKEN in `tests/unit/services/fb-test.js` with respectively your Facebook App ID and access token.
+Before running tests, you need to set a valid Facebook access token for a test user of our test app. If you have no access to the Facebook test App, use one of your own.
 
 * `ember test`
 * `ember test --server`

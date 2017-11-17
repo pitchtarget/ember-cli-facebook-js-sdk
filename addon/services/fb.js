@@ -103,7 +103,7 @@ export default Service.extend(Evented, {
 
   api() {
     return this._api(...arguments).catch((error) => {
-      if (this.refreshToken && error.code === 190) {
+      if (this.refreshToken && (error.code === 190 || error.code === 2500)) {
         console.debug('Trying to refresh Facebook session an re-do the Facebook API request');
         return this.getLoginStatus().then((response) => {
           if (response.status === 'connected') {

@@ -85,7 +85,9 @@ export default Service.extend(Evented, {
         parameters = arguments[2];
     }
 
-    parameters = assign(parameters, {access_token: this.accessToken});
+    if (!parameters.access_token) {
+      parameters = assign(parameters, {access_token: this.accessToken});
+    }
 
     return this.FBInit().then(function() {
       return new Promise(function(resolve, reject) {

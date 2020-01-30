@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 import Evented from '@ember/object/evented';
 import Service from '@ember/service';
 import { getOwner } from '@ember/application';
@@ -39,9 +37,11 @@ export default Service.extend(Evented, {
         run.next(null, resolve);
       };
       // URL for the SDK is built according to locale. Defaults to `en_US`.
-      $.getScript(`https://connect.facebook.net/${locale}/sdk.js`, function() {
-        // Do nothing here, wait for window.fbAsyncInit to be called.
-      });
+      const scriptURL = `https://connect.facebook.net/${locale}/sdk.js`;
+      const head = document.getElementsByTagName('head')[0];
+      const script = document.createElement('script');
+      script.src = scriptURL;
+      head.appendChild(script);
     }).then(function() {
       if (original) {
         window.fbAsyncInit = original;
